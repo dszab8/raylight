@@ -1,7 +1,12 @@
 import torch
 
 import comfy
-from comfy_extras.nodes_minimax_h3 import MiniMaxH3FunControlBlockPatch
+try:
+    from comfy_extras.nodes_minimax_h3 import MiniMaxH3FunControlBlockPatch
+except ImportError:
+    # ComfyUI < 0.35 has no FunControl block patch, so no patch can be one.
+    class MiniMaxH3FunControlBlockPatch:
+        pass
 from comfy.ldm.minimax.model import AUDIO_COND_TIMESTEP, VISUAL_COND_TIMESTEP, PackedLayout, mask_row_values, pack_audio, patchify_video, rope_rotation_table, time_shift_sigma, unpack_audio, unpatchify_video
 from xfuser.core.distributed import get_sequence_parallel_rank, get_sequence_parallel_world_size, get_sp_group
 
